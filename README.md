@@ -1,15 +1,10 @@
-#Install Terraform on MacOS
+# Learn Terraform - Lambda functions and API Gateway
 
-brew tap hashicorp/tap
+AWS Lambda functions and API gateway are often used to create serverlesss applications.
 
-brew install hashicorp/tap/terraform
+Follow along with this [tutorial on HashiCorp
+Learn](https://learn.hashicorp.com/tutorials/terraform/lambda-api-gateway?in=terraform/aws).
 
-#check install
-terraform --help
+#Commands :
 
-#Install AWS CLI
-
-#Terraform commands
-terraform init
-terraform apply
-terraform destroy
+aws s3 ls $(terraform output -raw lambda_bucket_name)
