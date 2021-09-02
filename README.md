@@ -1,11 +1,11 @@
-# Learn Terraform - Lambda functions and API Gateway
+# Terraform - Lambda functions and API Gateway (Example)
 
 AWS Lambda functions and API gateway are often used to create serverlesss applications.
 
-Follow along with this [tutorial on HashiCorp
+Reference : [tutorial on HashiCorp
 Learn](https://learn.hashicorp.com/tutorials/terraform/lambda-api-gateway?in=terraform/aws).
 
-#Commands :
+#Output commandas :
 
 //List bucket
 aws s3 ls $(terraform output -raw lambda_bucket_name)
