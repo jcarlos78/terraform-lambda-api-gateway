@@ -25,7 +25,7 @@ provider "aws" {
 Create a renadom animal name for the buckets
 */
 resource "random_pet" "lambda_bucket_name" {
-  prefix = "learn-terraform-functions"
+  prefix = "example-terraform-functions"
   length = 4
 }
 
@@ -42,38 +42,38 @@ resource "aws_s3_bucket" "lambda_bucket" {
 /**
 Zip lambda function and modules.
 */
-data "archive_file" "lambda_hello_world" {
+data "archive_file" "terraforma_lambda_example" {
   type = "zip"
 
-  source_dir  = "${path.module}/hello-world"
-  output_path = "${path.module}/hello-world.zip"
+  source_dir  = "${path.module}/terraforma_lambda_example"
+  output_path = "${path.module}/terraforma_lambda_example.zip"
 }
 
 /**
 Add ziped lambda function to S3.
 */
-resource "aws_s3_bucket_object" "lambda_hello_world" {
+resource "aws_s3_bucket_object" "terraforma_lambda_example" {
   bucket = aws_s3_bucket.lambda_bucket.id
 
-  key    = "hello-world.zip"
-  source = data.archive_file.lambda_hello_world.output_path
+  key    = "terraforma_lambda_example.zip"
+  source = data.archive_file.terraforma_lambda_example.output_path
 
-  etag = filemd5(data.archive_file.lambda_hello_world.output_path)
+  etag = filemd5(data.archive_file.terraforma_lambda_example.output_path)
 }
 
 /** 
 Create the lambda function.
 **/
-resource "aws_lambda_function" "hello_world" {
-  function_name = "HelloWorld"
+resource "aws_lambda_function" "terraforma_lambda_example" {
+  function_name = "terraforma-lambda-example"
 
   s3_bucket = aws_s3_bucket.lambda_bucket.id
-  s3_key    = aws_s3_bucket_object.lambda_hello_world.key
+  s3_key    = aws_s3_bucket_object.terraforma_lambda_example.key
 
   runtime = "nodejs12.x"
-  handler = "hello.handler"
+  handler = "main.handler"
 
-  source_code_hash = data.archive_file.lambda_hello_world.output_base64sha256
+  source_code_hash = data.archive_file.terraforma_lambda_example.output_base64sha256
 
   role = aws_iam_role.lambda_exec.arn
 }
@@ -81,8 +81,8 @@ resource "aws_lambda_function" "hello_world" {
 /** 
 Create cloudwatch for the lambda function.
 **/
-resource "aws_cloudwatch_log_group" "hello_world" {
-  name = "/aws/lambda/${aws_lambda_function.hello_world.function_name}"
+resource "aws_cloudwatch_log_group" "terraforma_lambda_example" {
+  name = "/aws/lambda/${aws_lambda_function.terraforma_lambda_example.function_name}"
 
   retention_in_days = 30
 }
@@ -154,10 +154,10 @@ resource "aws_apigatewayv2_stage" "lambda" {
 /**
 Configures API Gateway to use your Lambda function
 */
-resource "aws_apigatewayv2_integration" "hello_world" {
+resource "aws_apigatewayv2_integration" "terraforma_lambda_example" {
   api_id = aws_apigatewayv2_api.lambda.id
 
-  integration_uri    = aws_lambda_function.hello_world.invoke_arn
+  integration_uri    = aws_lambda_function.terraforma_lambda_example.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
 }
@@ -165,11 +165,11 @@ resource "aws_apigatewayv2_integration" "hello_world" {
 /**
 Map HTTP request to a target
 */
-resource "aws_apigatewayv2_route" "hello_world" {
+resource "aws_apigatewayv2_route" "terraforma_lambda_example" {
   api_id = aws_apigatewayv2_api.lambda.id
 
   route_key = "GET /hello"
-  target    = "integrations/${aws_apigatewayv2_integration.hello_world.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.terraforma_lambda_example.id}"
 }
 
 /**
@@ -187,7 +187,7 @@ Gives API Gateway permission to invoke the Lambda function
 resource "aws_lambda_permission" "api_gw" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.hello_world.function_name
+  function_name = aws_lambda_function.terraforma_lambda_example.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
