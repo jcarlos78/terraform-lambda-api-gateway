@@ -1,4 +1,4 @@
-# Terraform - Lambda functions and API Gateway (Example)
+# Terraform - Lambda function and API Gateway (Example)
 
 AWS Lambda functions and API gateway are often used to create serverlesss applications.
 
