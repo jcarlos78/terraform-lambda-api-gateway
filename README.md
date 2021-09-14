@@ -2,9 +2,6 @@
 
 AWS Lambda functions and API gateway are often used to create serverlesss applications.
 
-Reference : [tutorial on HashiCorp
-Learn](https://learn.hashicorp.com/tutorials/terraform/lambda-api-gateway?in=terraform/aws).
-
 #Output commandas :
 
 //List bucket
