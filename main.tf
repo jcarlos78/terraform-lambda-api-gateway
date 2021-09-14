@@ -99,6 +99,11 @@ resource "aws_lambda_function" "terraforma_lambda_example" {
   source_code_hash = data.archive_file.terraforma_lambda_example.output_base64sha256
 
   role = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = aws_docdb_cluster_instance.cluster_instances.endpoint
+  }
+
 }
 
 /** 
@@ -183,10 +188,6 @@ resource "aws_apigatewayv2_integration" "terraforma_lambda_example" {
   integration_uri    = aws_lambda_function.terraforma_lambda_example.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
-
-  environment {
-    variables = aws_docdb_cluster_instance.cluster_instances
-  }
   
 }
 
