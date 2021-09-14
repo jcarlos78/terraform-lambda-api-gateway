@@ -183,6 +183,11 @@ resource "aws_apigatewayv2_integration" "terraforma_lambda_example" {
   integration_uri    = aws_lambda_function.terraforma_lambda_example.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
+
+  environment {
+    variables = aws_docdb_cluster_instance.cluster_instances
+  }
+  
 }
 
 /**
@@ -214,9 +219,8 @@ resource "aws_lambda_permission" "api_gw" {
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
-
-  environment {
-    variables = aws_docdb_cluster_instance.cluster_instances
-  }
-
 }
+
+/**
+version = v1.0.0
+*/
