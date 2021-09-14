@@ -101,7 +101,7 @@ resource "aws_lambda_function" "terraforma_lambda_example" {
   role = aws_iam_role.lambda_exec.arn
 
   environment {
-    variables = aws_docdb_cluster_instance.cluster_instances.endpoint
+    variables = aws_docdb_cluster.default.endpoint
   }
 
 }
