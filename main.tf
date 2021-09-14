@@ -22,6 +22,29 @@ provider "aws" {
 }
 
 /**
+Create a document cluster instance
+*/
+resource "aws_docdb_cluster_instance" "cluster_instances" {
+  count              = 1
+  identifier         = "docdb-${count.index}"
+  cluster_identifier = aws_docdb_cluster.default.id
+  instance_class     = "db.t3.medium"
+}
+
+/**
+Create a document cluster
+*/
+resource "aws_docdb_cluster" "default" {
+  cluster_identifier = "docdb-cluster-demo"
+  availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  master_username    = "foo"
+  master_password    = "barbut8chars"
+  backup_retention_period = 5
+  deletion_protection = true
+  skip_final_snapshot     = true
+}
+
+/**
 Create a renadom animal name for the buckets
 */
 resource "random_pet" "lambda_bucket_name" {
@@ -191,4 +214,9 @@ resource "aws_lambda_permission" "api_gw" {
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
+
+  environment {
+    variables = aws_docdb_cluster_instance.cluster_instances
+  }
+
 }
