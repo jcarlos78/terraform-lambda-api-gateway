@@ -96,7 +96,7 @@ resource "aws_lambda_function" "terraforma_lambda_example" {
   s3_key    = aws_s3_bucket_object.terraforma_lambda_example.key
 
   runtime = "nodejs12.x"
-  handler = "main.handler"
+  handler = "hello.handler"
 
   source_code_hash = data.archive_file.terraforma_lambda_example.output_base64sha256
 
