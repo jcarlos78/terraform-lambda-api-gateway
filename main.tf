@@ -26,25 +26,25 @@ provider "aws" {
 /**
 Create a document cluster
 */
-resource "aws_docdb_cluster" "default" {
-  cluster_identifier = "docdb-cluster-demo"
-  availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  master_username    = "foo"
-  master_password    = "barbut8chars"
-  backup_retention_period = 5
-  deletion_protection = true
-  skip_final_snapshot     = true
-}
+# resource "aws_docdb_cluster" "default" {
+#   cluster_identifier = "docdb-cluster-demo"
+#   availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+#   master_username    = "foo"
+#   master_password    = "barbut8chars"
+#   backup_retention_period = 5
+#   deletion_protection = true
+#   skip_final_snapshot     = true
+# }
 
 /**
 Create a document cluster instance
 */
-resource "aws_docdb_cluster_instance" "cluster_instances" {
-  count              = 1
-  identifier         = "docdb-${count.index}"
-  cluster_identifier = aws_docdb_cluster.default.id
-  instance_class     = "db.t3.medium"
-}
+# resource "aws_docdb_cluster_instance" "cluster_instances" {
+#   count              = 1
+#   identifier         = "docdb-${count.index}"
+#   cluster_identifier = aws_docdb_cluster.default.id
+#   instance_class     = "db.t3.medium"
+# }
 
 /**
 Create a renadom animal name for the buckets
@@ -102,12 +102,12 @@ resource "aws_lambda_function" "terraforma_lambda_example" {
 
   role = aws_iam_role.lambda_exec.arn
 
-  environment {
-    variables = {
-      DOCDB_ENDPOINT = aws_docdb_cluster.default.endpoint
-    }
+  # environment {
+  #   variables = {
+  #     DOCDB_ENDPOINT = aws_docdb_cluster.default.endpoint
+  #   }
     
-  }
+  # }
 
 }
 
