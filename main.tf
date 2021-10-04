@@ -228,5 +228,5 @@ resource "aws_lambda_permission" "api_gw" {
 }
 
 /**
-version = v1.0.3
+version = v1.0.4
 */
